@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar with Daily Schedule</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .calendar-container {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .calendar-day {
+      padding: 10px;
+      border: 1px solid #ddd;
+      background-color: #fff;
+      border-radius: 5px;
+      position: relative;
+      height: 150px;
+    }
+    .calendar-day h4 {
+      margin-top: 0;
+      font-size: 16px;
+      font-weight: bold;
+      color: #86BA90;
+    }
+    .schedule-input {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      padding: 5px;
+      font-size: 12px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    .calendar-header {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #86BA90;
+    }
+  </style>
+</head>
+<body>
+
+<div class="calendar-header">
+  <h1>2025 Calendar with Daily Schedule</h1>
+</div>
+
+<div class="calendar-container" id="calendar-container"></div>
+
+<script>
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const daysInMonth = [
+    31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+  ];
+
+  const calendarContainer = document.getElementById('calendar-container');
+
+  // Generate calendar for a specific year
+  function generateCalendar(year) {
+    let dayOfWeek = new Date(year, 0, 1).getDay(); // Get the starting day of the year (0 = Sunday, 1 = Monday, etc.)
+    
+    // Loop through each month
+    months.forEach((month, monthIndex) => {
+      let numDays = daysInMonth[monthIndex];
+      
+      // For leap years, adjust February
+      if (monthIndex === 1 && isLeapYear(year)) {
+        numDays = 29;
+      }
+      
+      // Loop through each day in the month
+      for (let day = 1; day <= numDays; day++) {
+        const dayDiv = document.createElement('div');
+        dayDiv.classList.add('calendar-day');
+        
+        // Create day title (e.g., "March 1")
+        const dayTitle = document.createElement('h4');
+        dayTitle.textContent = `${month} ${day}`;
+        
+        // Create input for daily schedule
+        const scheduleInput = document.createElement('input');
+        scheduleInput.classList.add('schedule-input');
+        scheduleInput.placeholder = "Enter your schedule...";
+
+        // Append day title and input to the day div
+        dayDiv.appendChild(dayTitle);
+        dayDiv.appendChild(scheduleInput);
+
+        // Add the day div to the calendar container
+        calendarContainer.appendChild(dayDiv);
+        
+        // Update the day of the week for the next day
+        dayOfWeek = (dayOfWeek + 1) % 7;
+      }
+    });
+  }
+
+  // Check if the year is a leap year
+  function isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+  }
+
+  // Generate the 2025 calendar
+  generateCalendar(2025);
+</script>
+
+</body>
+</html>
